@@ -76,10 +76,10 @@ before_script:
 
 script:
   - mkdir build && cd build/
-  - ../cmake-3.3.1-Linux-x86_64/bin/cmake ../_test
-  - ../cmake-3.3.1-Linux-x86_64/bin/cmake --build .
+  - cmake ../_test
+  - cmake --build .
   - ./comp_test
   - rm -r *
-  - ../cmake-3.3.1-Linux-x86_64/bin/cmake -D_COMP_TEST_WORKAROUND=ON ../_test
-  - ../cmake-3.3.1-Linux-x86_64/bin/cmake --build .
+  - cmake -D_COMP_TEST_WORKAROUND=ON ../_test
+  - cmake --build .
   - ./comp_test
