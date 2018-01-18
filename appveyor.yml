@@ -27,15 +27,16 @@ environment:
       PlatformToolset: v141
 
 build_script:
+- ps: "Get-ChildItem Env:"
 - tree
 - dir
 - mkdir build
 - mkdir build_workaround
 - cd build
-- cmake ../_test -G "%CMAKE_GEN%"
+- cmake ../_test -G "%CMAKE_GEN%" -T %PlatformToolset%
 - cmake --build .
 - ./comp-test
 - cd ../build_workaround
-- cmake ../_test -G "Visual Studio 12 2013" -D_COMP_TEST_WORKAROUND=ON
+- cmake ../_test -G "%CMAKE_GEN%" -T %PlatformToolset% -D_COMP_TEST_WORKAROUND=ON
 - cmake --build .
 - ./comp-test
