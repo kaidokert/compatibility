@@ -17,8 +17,8 @@ environment:
     - VisualStudioVersion: 10.0
       PlatformToolset: v100
       CMAKE_GEN: Visual Studio 10 2010
-      configuration: Debug
-      platform: x64
+      Configuration: Debug
+      Platform: x64
     # - VisualStudioVersion: 11.0
     #   PlatformToolset: v110
     # - VisualStudioVersion: 12.0
@@ -27,8 +27,9 @@ environment:
     #   PlatformToolset: v140
     - VisualStudioVersion: 15.0
       PlatformToolset: v141
-      configuration: Debug
-      platform: x64
+      Configuration: Debug
+      Platform: x64
+      CMAKE_GEN: Visual Studio 15 2017
 
 matrix:
   exclude:
