@@ -30,6 +30,10 @@ environment:
       Configuration: Debug
       Platform: x64
 
+matrix:
+  exclude:
+    - configuration: Release
+
 build_script:
 - ps: "Get-ChildItem Env:"
 - tree
