@@ -33,6 +33,7 @@ environment:
 matrix:
   exclude:
     - configuration: Release
+    - platform: x86
 
 build_script:
 - ps: "Get-ChildItem Env:"
