@@ -1,60 +1,78 @@
 language: cpp
 
-sudo: false
-
-env:
-  matrix:
-    - COMPILER=g++-4.9 COVERAGE=coverage GCOV=gcov-4.9
-    - COMPILER=g++-5
-    - COMPILER=clang++-3.6
-    - COMPILER=clang++-3.7
-    - TOOLCHAIN=gcc-arm-none-eabi-4_9-2015q3 COMPILER=arm-none-eabi-g++ ARM=yes
-    - TOOLCHAIN=gcc-arm-none-eabi-5_4-2016q3 COMPILER=arm-none-eabi-g++ ARM=yes
-    - TOOLCHAIN=gcc-arm-none-eabi-6_2-2016q4 COMPILER=arm-none-eabi-g++ ARM=yes
-
 matrix:
   include:
     - os: osx
       osx_image: xcode6.4
       env: COMPILER='clang++'
     - os: osx
-      osx_image: xcode7.3
+      osx_image: xcode7
       env: COMPILER='clang++'
     - os: osx
-      osx_image: xcode8.2
+      osx_image: xcode9.2
       env: COMPILER='clang++'
+    - env: COMPILER=g++-4.9 COVERAGE=coverage GCOV=gcov-4.9
+      addons:
+        apt:
+          packages:
+            - g++-4.9
+          sources:
+            - ubuntu-toolchain-r-test
+    - env: COMPILER=g++-5
+      addons:
+        apt:
+          packages:
+            - g++-5
+          sources:
+            - ubuntu-toolchain-r-test
+    - env: COMPILER=g++-6
+      addons:
+        apt:
+          packages:
+            - g++-6
+          sources:
+            - ubuntu-toolchain-r-test
+    - env: COMPILER=g++-7
+      addons:
+        apt:
+          packages:
+            - g++-7
+          sources:
+            - ubuntu-toolchain-r-test
+    - env: COMPILER='clang++-3.9'
+      addons:
+        apt:
+          packages:
+            - clang-3.9
+    - env: COMPILER='clang++-4.0'
+      addons:
+        apt:
+          packages:
+            - clang-4.0
+          sources:
+            - llvm-toolchain-trusty-4.0
+    - env: COMPILER='clang++-5.0'
+      addons:
+        apt:
+          packages:
+            - clang-5.0
+          sources:
+            - llvm-toolchain-trusty-5.0
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-      - llvm-toolchain-precise
-      - llvm-toolchain-precise-3.6
-      - llvm-toolchain-precise-3.7
-      - george-edison55-precise-backports
-    packages:
-      - g++-4.9
-      - g++-5
-      - clang-3.6
-      - clang-3.7
-      - libc6-i386 #required to run 32-bit toolchains
-      - cmake
-      - cmake-data
-
-cache:
-  directories:
-    - $HOME/arm-toolchains
+before_install:
+  - cmake --version
+  - g++ --version
+  - clang++ --version
+  - if [ $TRAVIS_OS_NAME == linux ]; then
+    apt-cache search "clang" | egrep "^clang-[0-9\.]+ ";
+    apt-cache search "g++" | egrep "^g\+\+-[0-9\.]+ ";
+    fi
 
 install:
-  - if test -n "$COVERAGE"; then pip install --user cpp-coveralls requests[security]; fi
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew update ; brew uninstall --force cmake; brew install cmake ; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then . sync-arm-toolchains.sh ; fi
+  - if test -n "$COVERAGE"; then pip install --user cpp-coveralls; fi
 
 before_script:
-  - export CXX=$COMPILER
-  - export PATH=$PATH:$HOME/arm-toolchains/$TOOLCHAIN/bin
-  - find $HOME -name arm-none-eabi-g++
-  - cmake --version
+- export CXX=$COMPILER
 
 script:
   - mkdir build && cd build/
