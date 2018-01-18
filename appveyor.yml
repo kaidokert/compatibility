@@ -19,6 +19,7 @@ environment:
       PlatformToolset: v140
 
 build_script:
+- tree
 - mkdir build
 - cd build
 - cmake .. -G "Visual Studio 12 2013"
